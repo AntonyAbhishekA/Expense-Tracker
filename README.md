@@ -257,13 +257,27 @@ __pycache__/
 
 ▶️ Running the Application
 
+Open terminal
+brew services start mysql
+You should see something like:
+Successfully started `mysql`
+Then verify:
+brew services list | grep mysql
+You want MySQL to show:
+started
+
+Open VS Code
+
+cd "/Users/antonyabhisheka/Documents/My Projects/expense-tracker"
+pwd
+
 Make sure your virtual environment is activated:
 
 source .venv/bin/activate
 
 Then start the Flask application:
 
-python app.py
+python3 app.py
 
 The application will start at:
 
