@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Expense History - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Expense History</h1>
+    <a href="{{ url_for('add_expense') }}" class="btn btn-primary">+ Add Expense</a>
+</div>
+
+<form method="GET" action="{{ url_for('expenses_list') }}" class="filter-bar">
+    <input type="text" name="search" placeholder="Search by title..." value="{{ search }}">
+
+    <select name="category">
+        <option value="">All Categories</option>
+        {% for c in categories %}
+        <option value="{{ c }}" {% if selected_category == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="month" name="month" value="{{ selected_month }}">
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="{{ url_for('expenses_list') }}" class="btn btn-secondary">Reset</a>
+</form>
+
+<section class="table-card">
+    <div class="table-wrapper">
+        <table class="expense-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in expenses %}
+                <tr>
+                    <td>{{ e.title }}</td>
+                    <td>₹{{ "%.2f"|format(e.amount) }}</td>
+                    <td><span class="category-badge cat-{{ e.category|lower }}">{{ e.category }}</span></td>
+                    <td>{{ e.date }}</td>
+                    <td>{{ e.payment_method }}</td>
+                    <td class="actions-cell">
+                        <a href="{{ url_for('edit_expense', expense_id=e.id) }}" class="btn btn-small btn-edit">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_expense', expense_id=e.id) }}"
+                              class="delete-form" data-title="{{ e.title }}">
+                            <button type="submit" class="btn btn-small btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="empty-row">No expenses match your filters.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

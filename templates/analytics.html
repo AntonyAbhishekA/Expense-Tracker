@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Analytics - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Analytics</h1>
+</div>
+
+<div id="insightsBox" class="insights-box">
+    <h3>💡 Insights</h3>
+    <ul id="insightsList"><li>Loading insights…</li></ul>
+</div>
+
+<section class="charts-grid">
+    <div class="chart-card">
+        <h3>Spending by Category</h3>
+        <p class="chart-desc">Shows which categories eat up most of your budget.</p>
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Monthly Spending Trend</h3>
+        <p class="chart-desc">Tracks how your total spending changes month to month.</p>
+        <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Payment Method Distribution</h3>
+        <p class="chart-desc">Reveals which payment methods you rely on most.</p>
+        <canvas id="paymentChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Top 5 Expense Categories</h3>
+        <p class="chart-desc">Your five biggest spending categories, ranked.</p>
+        <canvas id="topCategoriesChart"></canvas>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Dashboard</h1>
+    <a href="{{ url_for('add_expense') }}" class="btn btn-primary">+ Add Expense</a>
+</div>
+
+<section class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-label">Total Expenses</span>
+        <span class="stat-value">₹{{ "%.2f"|format(total) }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Transactions</span>
+        <span class="stat-value">{{ count }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Average Expense</span>
+        <span class="stat-value">₹{{ "%.2f"|format(avg) }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Highest Expense</span>
+        <span class="stat-value">₹{{ "%.2f"|format(max) }}</span>
+    </div>
+    <div class="stat-card stat-card-accent">
+        <span class="stat-label">Top Category</span>
+        <span class="stat-value">{{ top_category }}</span>
+    </div>
+</section>
+
+<div id="insightsBox" class="insights-box">
+    <h3>💡 Insights</h3>
+    <ul id="insightsList"><li>Loading insights…</li></ul>
+</div>
+
+<section class="charts-grid">
+    <div class="chart-card">
+        <h3>Expenses by Category</h3>
+        <canvas id="categoryChart"></canvas>
+    </div>
+    <div class="chart-card">
+        <h3>Monthly Expenses</h3>
+        <canvas id="monthlyChart"></canvas>
+    </div>
+</section>
+
+<section class="table-card">
+    <div class="table-card-header">
+        <h3>Recent Transactions</h3>
+        <a href="{{ url_for('expenses_list') }}">View all →</a>
+    </div>
+    <div class="table-wrapper">
+        <table class="expense-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in recent %}
+                <tr>
+                    <td>{{ e.title }}</td>
+                    <td>₹{{ "%.2f"|format(e.amount) }}</td>
+                    <td><span class="category-badge cat-{{ e.category|lower }}">{{ e.category }}</span></td>
+                    <td>{{ e.date }}</td>
+                    <td>{{ e.payment_method }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="empty-row">No expenses yet. Add your first one!</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
